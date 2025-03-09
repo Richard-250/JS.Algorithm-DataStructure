@@ -102,12 +102,12 @@ function Name(name) {
 const numbers = new Set([1, 2, 3, 4, 4, 5]);
 console.log(numbers); // Output: Set(5) { 1, 2, 3, 4, 5 }
 
-const colors = new Set(["red", "green", "blue"]);
+const colors = new Set(["red", "green", "blue", "blue"]);
 for (let color of colors) {
-    console.log(color);
+    console.log("colors:",color);
 }
 const colorArray = [...colors];
-console.log(colorArray); // Output: ["red", "green", "blue"]
+console.log("colorArray:",colorArray); // Output: ["red", "green", "blue"]
 
 // UseCase 1
 const arr = [1, 2, 3, 3, 4, 5, 5, 6];
@@ -150,7 +150,7 @@ class CustomSet {
   }
 
   values() {
-      return Object.valuess(this.items);
+      return Object.values(this.items);
   }
 }
 
@@ -164,3 +164,70 @@ console.log(mySet.has(10)); // true
 mySet.delete(10);
 console.log(mySet.values()); // Output: [20]
 console.log(mySet.size()); // Output: 1
+
+// example 2 build another set data structure for better understanding
+
+function mySets() {
+    let collection = [];
+
+    this.has = function(element) {
+        return (collection.indexOf(element) !== -1);
+    };
+
+    this.values = function() {
+        return collection;
+    };
+
+    this.add = function(element) {
+        if(!this.has(element)) {
+            collection.push(element);
+            return true;
+        }
+        return false;
+    }
+
+    this.remove = function(element) {
+        if(this.has(element)) {
+            index = collection.indexOf(element);
+            collection.splice(index,1);
+            return true;
+        }
+        return false;
+    }
+
+    this.size = function() {
+        return collection.length
+    }
+// this will return the union of the two sets
+    this.union = function(otherSet) {
+        let unionSet = new mySets();
+        let firstSet = this.values();
+        let secondSet = otherSet.values();
+        firstSet.forEach(function(e) {
+            unionSet.add(e);
+        })
+        secondSet.forEach(function(e) {
+            unionSet.add(e);
+        });
+
+        return unionSet
+    }
+};
+
+
+let setA = new mySets();
+setA.add(1);
+setA.add(2);
+setA.add(3);
+
+let setB = new mySets();
+setB.add(3);
+setB.add(4);
+setB.add(5);
+
+let unionAB = setA.union(setB);
+console.log(unionAB.values()); // Expected output: [1, 2, 3, 4, 5]
+
+
+
+
